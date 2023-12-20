@@ -17,8 +17,8 @@ function App() {
       <div className="App">
         <Nav></Nav>
         <Routes>
-          <Route path='/' element={<Lists topics={topics} />} />
-          <Route path='/article' element={<Article />}/>
+          <Route path='/' element={<Lists />} />
+          <Route path='/article/:id' element={<Article />}/>
         </Routes>      
       </div>
     </BrowserRouter>

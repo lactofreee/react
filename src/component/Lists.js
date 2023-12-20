@@ -1,41 +1,38 @@
 /* eslint-disable */
 import { useEffect, useState } from 'react';
-import dummy from "../db/data.json"
+import LikeCount from './LikeCount';
+import { Link } from 'react-router-dom';
 
 //글 목록
-function Lists(props){
-  const [likes, setLikes] = useState(Array(props.topics.length).fill(0));
-  function likeHandle(index) {
-    setLikes(function (prevLikes) {
-      const newLikes = [...prevLikes];
-      newLikes[index]++;
-      return newLikes;
-    });
-  }
+function Lists(){
+  const [contents, setContents] = useState([]);
 
-  const lis = props.topics.map(function (t, index) {
-    return (
-    <div key={t.id}>
-      <h3>
-      <a href={'/read/'+t.id}>
-        {t.title} <span onClick={(event) =>{event.preventDefault(); likeHandle(index)}}> 👍{likes[index]}</span>
-      </a>
-      </h3>
-      <p>{props.topics[index].date}</p>
-      <hr />
-    </div>
-    )
-  })
- 
+  useEffect(() => {
+    fetch('http://localhost:3003/contents')
+    .then(res => {
+      return res.json();
+    })
+    .then(data => {
+      setContents(data);
+    })
+  }, [])
 
-    return(
-    <div>
-      {lis}
-    </div>
+  return(
 
-    )
-  }
-
+  <div>
+    <h3>{contents.map(content => (
+      <ul key={content.id}>
+        <Link to={`/article/${content.id}`}>{content.title}</Link>
+        <LikeCount like={content.like} />
+        <ul>
+          {content.date}
+        </ul>
+        <hr />
+      </ul>
+    ))}</h3>
+  </div>
+)
+}
   
   
 
